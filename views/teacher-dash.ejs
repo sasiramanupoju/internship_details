@@ -1,159 +1,164 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Teacher Portal | Manage</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
+<body style="font-family: 'Inter', sans-serif; background-color: #f8fafc;">
     
     <div class="container py-4">
-        <header class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeIn">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2 class="fw-800 text-dark mb-0">Teacher <span class="text-gradient">Portal</span></h2>
-                <p class="text-muted small">Elevate student careers</p>
+                <h2 class="fw-bold text-dark mb-0">Teacher <span class="text-primary">Portal</span></h2>
+                <p class="text-muted small">Manage your internship postings</p>
             </div>
-            <div class="profile-trigger">
-                <img src="https://ui-avatars.com/api/?name=Teacher&background=6366f1&color=fff" class="rounded-circle shadow-sm" width="45">
-            </div>
-        </header>
+            <!-- <img src="https://ui-avatars.com/api/?name=Teacher&background=6366f1&color=fff" class="rounded-circle shadow-sm" width="50"> -->
+        </div>
 
-        <div class="post-section mb-5 animate__animated animate__fadeInUp">
-            <button class="btn btn-post-toggle w-100 d-flex justify-content-between align-items-center mb-3" type="button" data-bs-toggle="collapse" data-bs-target="#postForm">
-                <span class="fw-bold"><span class="me-2">✨</span> Post New Internship</span>
-                <span class="toggle-icon">＋</span>
-            </button>
-
-            <div class="collapse shadow-lg" id="postForm">
-                <div class="glass-card p-4 border-0">
-                    <form action="/post-internship" method="POST">
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input name="title" class="form-control" id="t1" placeholder="Title" required>
-                                    <label for="t1">Internship Title</label>
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <input name="link" class="form-control" id="t2" placeholder="URL" required>
-                                    <label for="t2">Application Link</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating">
-                                    <input name="skills" class="form-control" id="t3" placeholder="Skills">
-                                    <label for="t3">Skills Needed</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating">
-                                    <input name="year" class="form-control" id="t4" placeholder="Year">
-                                    <label for="t4">Target Year</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating">
-                                    <input name="pay" class="form-control" id="t5" placeholder="Pay">
-                                    <label for="t5">Stipend</label>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="form-floating">
-                                    <input type="number" name="positions" class="form-control" id="t6" placeholder="Openings">
-                                    <label for="t6">Openings</label>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-gradient w-100 mt-4 py-3 fw-bold haptic-btn">
-                            Publish Now 🚀
-                        </button>
-                    </form>
+        <div class="glass-card p-4 mb-5 border-0 shadow-sm" style="background: white; border-radius: 20px;">
+            <h5 class="fw-bold mb-3 d-flex align-items-center">
+                <span class="me-2">✨</span> Post New Internship
+            </h5>
+            <form action="/post-internship" method="POST">
+                <div class="row g-3">
+                    <div class="col-12">
+                        <input name="title" placeholder="Internship Title (e.g. Frontend Developer)" class="form-control form-control-lg border-0 bg-light" required>
+                    </div>
+                    <div class="col-12">
+                        <input name="link" placeholder="External Application URL" class="form-control border-0 bg-light" required>
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <label class="small fw-bold text-muted ms-1">Skills</label>
+                        <input name="skills" placeholder="Java, React..." class="form-control border-0 bg-light">
+                    </div>
+                    <div class="col-md-4 col-6">
+                        <label class="small fw-bold text-muted ms-1">Year</label>
+                        <input name="year" placeholder="3rd, 4th..." class="form-control border-0 bg-light">
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <label class="small fw-bold text-muted ms-1">Stipend</label>
+                        <input name="pay" placeholder="₹10k" class="form-control border-0 bg-light">
+                    </div>
+                    <div class="col-md-2 col-6">
+                        <label class="small fw-bold text-muted ms-1">Openings</label>
+                        <input type="number" name="positions" placeholder="5" class="form-control border-0 bg-light">
+                    </div>
                 </div>
+                <button class="btn btn-gradient w-100 mt-4 py-3 fw-bold shadow-sm" style="background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%); color: white; border: none; border-radius: 15px;">
+                    Publish Internship
+                </button>
+            </form>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-3 gap-3">
+            <h5 class="fw-bold mb-0">Active Listings</h5>
+            
+            <div class="position-relative" style="min-width: 300px;">
+                <input type="text" id="searchInput" class="form-control border-0 shadow-sm ps-5" placeholder="Search by title or skills..." style="border-radius: 12px; height: 45px;">
+                <span class="position-absolute top-50 start-0 translate-middle-y ms-3">🔍</span>
             </div>
         </div>
-
-        <div class="search-wrapper mb-4 animate__animated animate__fadeIn animate__delay-1s">
-            <input type="text" id="searchInput" class="form-control" placeholder="Search your listings...">
-            <span class="search-icon">🔍</span>
-        </div>
-
-        <h5 class="fw-bold mb-3 ms-1">Active Listings</h5>
 
         <div id="listingsContainer" class="row">
             <% if (internships.length > 0) { %>
-                <% internships.forEach((job, index) => { %>
-                    <div class="col-12 mb-3 listing-card-wrapper animate__animated animate__fadeInUp" style="animation-delay: <%= index * 0.1 %>s" data-title="<%= job.title.toLowerCase() %>" data-skills="<%= job.skills_needed.toLowerCase() %>">
-                        <div class="card listing-card h-100 p-3">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <div>
-                                    <h6 class="fw-800 mb-0 text-dark"><%= job.title %></h6>
-                                    <small class="text-primary fw-600">Active</small>
+                <% internships.forEach(job => { %>
+                    <div class="col-12 mb-3 listing-card" data-title="<%= job.title.toLowerCase() %>" data-skills="<%= job.skills_needed.toLowerCase() %>">
+                        <div class="card border-0 shadow-sm p-3" style="border-radius: 18px;">
+                            <div class="card-body p-2">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="d-flex align-items-center gap-2 mb-1">
+                                            <h6 class="mb-0 fw-bold text-dark"><%= job.title %></h6>
+                                            <span class="badge bg-light text-muted fw-normal" style="font-size: 0.7rem;">
+                                                📅 <%= job.created_at ? new Date(job.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) : 'Recently' %>
+                                            </span>
+                                        </div>
+                                        <p class="text-muted small mb-3">Skills: <%= job.skills_needed %></p>
+                                        
+                                        <div class="d-flex gap-3">
+                                            <div class="text-center">
+                                                <p class="mb-0 fw-bold text-primary" style="font-size: 1.1rem;"><%= job.applicant_count %></p>
+                                                <p class="text-muted small mb-0" style="font-size: 0.65rem; text-transform: uppercase;">Applied</p>
+                                            </div>
+                                            <div class="vr"></div>
+                                            <div class="text-center">
+                                                <p class="mb-0 fw-bold text-dark" style="font-size: 1.1rem;"><%= job.open_positions %></p>
+                                                <p class="text-muted small mb-0" style="font-size: 0.65rem; text-transform: uppercase;">Openings</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column flex-sm-row gap-2">
+                                        <a href="/applicants/<%= job.id %>" class="btn btn-primary rounded-pill px-4 py-2 small fw-bold shadow-sm">
+                                            View Students
+                                        </a>
+                                        
+                                        <form action="/delete-internship/<%= job.id %>" method="POST" onsubmit="return confirm('Are you sure you want to remove this listing? All applicant data for this post will be lost.');">
+                                            <button type="submit" class="btn btn-outline-danger rounded-pill px-4 py-2 small fw-bold">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                    
                                 </div>
-                                <span class="date-badge">
-                                    <%= job.created_at ? new Date(job.created_at).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' }) : 'Today' %>
-                                </span>
-                            </div>
-                            
-                            <div class="stats-grid mb-3">
-                                <div class="stat-item">
-                                    <span class="stat-value"><%= job.applicant_count %></span>
-                                    <span class="stat-label">APPLIED</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value"><%= job.open_positions %></span>
-                                    <span class="stat-label">SLOTS</span>
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value"><%= job.pay %></span>
-                                    <span class="stat-label">PAY</span>
-                                </div>
-                            </div>
-
-                            <div class="d-flex gap-2">
-                                <a href="/applicants/<%= job.id %>" class="btn btn-action-view flex-grow-1">View Students</a>
-                                <form action="/delete-internship/<%= job.id %>" method="POST" onsubmit="return confirm('Delete this listing?');" class="m-0">
-                                    <button type="submit" class="btn btn-action-delete">🗑️</button>
-                                </form>
                             </div>
                         </div>
                     </div>
                 <% }) %>
+            <% } else { %>
+                <div class="col-12 text-center py-5">
+                    <div class="glass-card p-5 shadow-sm" style="background: white; border-radius: 20px;">
+                        <h2 style="font-size: 3rem;">📝</h2>
+                        <h5 class="fw-bold mt-3">No Active Listings</h5>
+                        <p class="text-muted">You haven't posted any internships yet. Use the form above to start!</p>
+                    </div>
+                </div>
             <% } %>
+        </div>
+
+        <div id="noResults" class="text-center py-5 d-none">
+            <p class="text-muted">No listings match your search.</p>
         </div>
     </div>
 
-    <nav class="mobile-nav">
-        <a href="/teacher-dash" class="nav-item active"><i>🏠</i><span>Home</span></a>
-        <a href="/profile" class="nav-item"><i>👤</i><span>Profile</span></a>
-        <a href="/" class="nav-item"><i>🚪</i><span>Exit</span></a>
-    </nav>
+    <div class="mobile-nav" style="position: fixed; bottom: 0; left: 0; right: 0; background: white; display: flex; justify-content: space-around; padding: 15px 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.05); border-radius: 20px 20px 0 0; z-index: 1000;">
+        <a href="/teacher-dash" class="nav-item text-primary text-decoration-none text-center">
+            <div style="font-size: 1.2rem;">🏠</div>
+            <small style="font-size: 0.7rem;">Home</small>
+        </a>
+        <a href="/profile" class="nav-item text-muted text-decoration-none text-center">
+            <div style="font-size: 1.2rem;">👤</div>
+            <small style="font-size: 0.7rem;">Profile</small>
+        </a>
+        <a href="/" class="nav-item text-muted text-decoration-none text-center">
+            <div style="font-size: 1.2rem;">🚪</div>
+            <small style="font-size: 0.7rem;">Logout</small>
+        </a>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Haptic Feedback Search
         const searchInput = document.getElementById('searchInput');
-        const cards = document.querySelectorAll('.listing-card-wrapper');
+        const cards = document.querySelectorAll('.listing-card');
+        const noResults = document.getElementById('noResults');
 
         searchInput.addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
+            let hasVisible = false;
+
             cards.forEach(card => {
                 const title = card.getAttribute('data-title');
                 const skills = card.getAttribute('data-skills');
-                const isMatch = title.includes(term) || skills.includes(term);
-                card.style.display = isMatch ? 'block' : 'none';
-                if(isMatch) card.classList.add('animate__animated', 'animate__fadeIn');
+                
+                if (title.includes(term) || skills.includes(term)) {
+                    card.classList.remove('d-none');
+                    hasVisible = true;
+                } else {
+                    card.classList.add('d-none');
+                }
             });
-        });
 
-        // Touch Interaction
-        document.querySelectorAll('.listing-card').forEach(card => {
-            card.addEventListener('touchstart', () => card.style.transform = "scale(0.97)");
-            card.addEventListener('touchend', () => card.style.transform = "scale(1)");
+            noResults.classList.toggle('d-none', hasVisible);
         });
     </script>
 </body>
