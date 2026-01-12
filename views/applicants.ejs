@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant Insights</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container { position: relative; height: 300px; width: 100%; }
+        .stats-card { border-radius: 15px; border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <a href="/teacher-dash" class="btn btn-outline-secondary btn-sm mb-4">← Back to Dashboard</a>
+        
+        <div class="row g-4 mb-4">
+            <div class="col-lg-8">
+                <div class="card stats-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+    <h5 class="fw-bold">
+        Applied Students (<%= students.length %>)
+    </h5>
+
+    <a href="/download-applicants/<%= internshipId %>" 
+       class="btn btn-success btn-sm">
+        ⬇ Download Excel
+    </a>
+</div>
+
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>Roll Number</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+    <% students.forEach(s => { %>
+        <tr>
+            <td><strong><%= s.full_name %></strong><br><small><%= s.email %></small></td>
+            <td><%= s.department %></td>
+            <td><%= s.roll_number %></td>
+            <td>
+                <span class="badge rounded-pill <%= s.status === 'Hired' ? 'bg-success' : 'bg-primary' %>">
+                    <%= s.status %>
+                </span>
+            </td>
+        </tr>
+    <% }) %>
+</tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card stats-card p-4 h-100">
+                    <h5 class="fw-bold mb-3">Department Split</h5>
+                    <div style="height: 300px; width: 100%; position: relative;">
+                        <canvas id="deptChart"></canvas>
+                    </div>
+                    <div id="chartErrorMessage" class="text-danger small mt-2"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-dark small">
+            <strong>Server Debug:</strong> 
+            Received <%= students.length %> student records and stats for <%= JSON.parse(stats).length %> departments.
+        </div>
+    </div>
+
+    <script>
+    // Using a function to ensure Chart.js is ready
+    function renderChart() {
+        try {
+            // Check if Chart.js is actually loaded
+            if (typeof Chart === 'undefined') {
+                document.getElementById('chartErrorMessage').innerText = "Error: Chart library not loaded. Check internet connection.";
+                return;
+            }
+
+            const statsData = <%- stats %>;
+            const ctx = document.getElementById('deptChart').getContext('2d');
+
+            if (statsData && statsData.length > 0) {
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: statsData.map(d => d.department),
+                        datasets: [{
+                            data: statsData.map(d => d.count),
+                            backgroundColor: ['#6366f1', '#a855f7', '#ec4899', '#f59e0b', '#10b981'],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { position: 'bottom' }
+                        }
+                    }
+                });
+            }
+        } catch (e) {
+            console.error("Rendering Error:", e);
+        }
+    }
+
+    // Run the function after everything loads
+    window.addEventListener('load', renderChart);
+</script>
+
+    <script>
+    // Wrap in window.onload to ensure the DOM and Chart.js are fully ready
+    window.onload = function() {
+        try {
+            const statsData = <%- stats %>;
+            console.log("Chart Data:", statsData);
+
+            const ctx = document.getElementById('deptChart');
+            
+            if (statsData && statsData.length > 0) {
+                // Clear any previous chart instance to prevent invisible overlap
+                if (window.myChart) {
+                    window.myChart.destroy();
+                }
+
+                window.myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: statsData.map(d => d.department),
+                        datasets: [{
+                            data: statsData.map(d => d.count),
+                            backgroundColor: ['#6366f1', '#a855f7', '#ec4899', '#f59e0b', '#10b981'],
+                            borderWidth: 2,
+                            borderColor: '#ffffff'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { padding: 20, font: { size: 12 } }
+                            }
+                        }
+                    }
+                });
+            } else {
+                document.getElementById('chartWrapper').innerHTML = 
+                    '<div class="text-center mt-5 text-muted">No applications found for this role.</div>';
+            }
+        } catch (err) {
+            console.error("Chart Rendering Error:", err);
+        }
+    };
+</script>
+</body>
+</html>

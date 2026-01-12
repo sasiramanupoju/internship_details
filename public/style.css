@@ -1,0 +1,67 @@
+:root {
+    --primary: #6366f1;
+    --secondary: #a855f7;
+    --bg: #f8fafc;
+    --card: #ffffff;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: 'Inter', sans-serif;
+    padding-bottom: 70px; /* Space for mobile nav */
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: transform 0.2s;
+}
+
+.btn-gradient:hover {
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Bottom Navigation for Mobile */
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--card);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+    z-index: 1000;
+}
+
+.nav-item {
+    text-align: center;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.75rem;
+}
+
+.nav-item.active { color: var(--primary); }
+
+.internship-card {
+    border: none;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+}
+
+.internship-card:hover {
+    transform: scale(1.02);
+}
