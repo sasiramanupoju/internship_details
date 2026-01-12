@@ -13,3 +13,15 @@
     }
   ]
 }
+
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "routes": [
+    {
+      "src": "/style.css",
+      "dest": "/public/style.css"
+    }
+  ]
+}
