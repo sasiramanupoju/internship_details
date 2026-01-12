@@ -27,6 +27,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 // app.use(express.static('public'));
 
+// Replace line 32 in your server.js 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
     secret: 'secret-key',
