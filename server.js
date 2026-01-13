@@ -39,12 +39,11 @@ app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
         "default-src 'self'; " +
-        // Added 'unsafe-inline' to the line below
         "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " + 
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com https://cdnjs.cloudflare.com; " +
         "font-src 'self' https://fonts.gstatic.com; " +
         "img-src 'self' data: https://ui-avatars.com; " +
-        "connect-src 'self' ws://localhost:* http://localhost:*;"
+        "connect-src 'self' https://cdn.jsdelivr.net;"
     );
     next();
 });
