@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>My Applications</title>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -17,6 +18,38 @@ body{
 /* App header */
 .page-title{
     font-weight:700;
+}
+
+/* Search bar */
+.search-box{
+    background:white;
+    padding:12px 16px;
+    border-radius:14px;
+    box-shadow:0 5px 15px rgba(0,0,0,.05);
+    margin-bottom:12px;
+}
+
+/* Filter buttons */
+.filter-bar{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:18px;
+}
+
+.filter-btn{
+    border:2px solid #6366f1;
+    background:white;
+    color:#6366f1;
+    border-radius:20px;
+    padding:6px 14px;
+    font-size:13px;
+    font-weight:700;
+}
+
+.filter-btn.active{
+    background:#6366f1;
+    color:white;
 }
 
 /* Application Card */
@@ -125,91 +158,36 @@ body{
 
 <body>
 
-    <script>
-const searchInput = document.getElementById("searchInput");
-const cards = document.querySelectorAll(".app-card");
-const filterBtns = document.querySelectorAll(".filter-btn");
-
-let activeStatus = "all";
-
-function filterCards(){
-    const term = searchInput.value.toLowerCase();
-
-    cards.forEach(card => {
-        const title = card.dataset.title;
-        const status = card.dataset.status;
-
-        const matchesSearch = title.includes(term);
-        const matchesStatus = activeStatus === "all" || status === activeStatus;
-
-        if(matchesSearch && matchesStatus){
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-}
-
-searchInput.addEventListener("input", filterCards);
-
-filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        filterBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-
-        activeStatus = btn.dataset.status;
-        filterCards();
-    });
-});
-</script>
-
-
 <div class="container py-4">
     <h3 class="page-title mb-1">My <span class="text-primary">Applications</span></h3>
-    <p class="text-muted small mb-4">Track your progress in real time</p>
+    <p class="text-muted small">Track your progress in real time</p>
 
-    <!-- Search + Filters -->
-<div class="mb-3">
-
-    <input id="searchInput" 
-           type="text"
-           class="form-control mb-2"
-           placeholder="Search by company or role…">
-
-    <div class="d-flex gap-2 flex-wrap">
-        <button class="btn btn-sm btn-outline-primary filter-btn active" data-status="all">All</button>
-        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Applied">Applied</button>
-        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Received">In Progress</button>
-        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Hired">Hired</button>
+    <!-- SEARCH -->
+    <div class="search-box">
+        <input id="searchInput" class="form-control border-0" placeholder="Search by company or role">
     </div>
 
-</div>
-
-
-    <% if(apps.length === 0){ %>
-        <div class="text-center mt-5">
-            <h2>📂</h2>
-            <p class="text-muted">You haven’t applied to any internships yet.</p>
-            <a href="/student-dash" class="btn btn-primary rounded-pill px-4">Explore Internships</a>
-        </div>
-    <% } %>
+    <!-- FILTERS -->
+    <div class="filter-bar">
+        <button class="filter-btn active" data-status="all">All</button>
+        <button class="filter-btn" data-status="Applied">Applied</button>
+        <button class="filter-btn" data-status="Received">In Progress</button>
+        <button class="filter-btn" data-status="Hired">Hired</button>
+    </div>
 
     <% apps.forEach(app => { %>
         <div class="app-card"
-     data-title="<%= app.title.toLowerCase() %>"
-     data-status="<%= app.status.split(' ')[0] %>">
+             data-title="<%= app.title.toLowerCase() %>"
+             data-status="<%= app.status.split(' ')[0] %>">
 
-            <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex justify-content-between">
                 <div>
-                    <h6 class="fw-bold mb-1"><%= app.title %></h6>
-                    <small class="text-muted">Application ID #<%= app.id %></small>
+                    <h6 class="fw-bold"><%= app.title %></h6>
+                    <small class="text-muted">Application #<%= app.id %></small>
                 </div>
-                <span class="status-pill status-<%= app.status.split(' ')[0] %>">
-                    <%= app.status %>
-                </span>
+                <span class="status-pill status-<%= app.status.split(' ')[0] %>"><%= app.status %></span>
             </div>
 
-            <!-- Update status -->
             <form action="/update-app-status/<%= app.id %>" method="POST" class="status-update">
                 <select name="status">
                     <option value="Applied" <%= app.status === 'Applied' ? 'selected' : '' %>>Applied</option>
@@ -221,25 +199,54 @@ filterBtns.forEach(btn => {
                 <button>Update</button>
             </form>
 
-            <!-- Actions -->
             <div class="actions">
                 <a href="<%= app.link %>" target="_blank" class="btn-view">🌐 View Job</a>
-
-                <form action="/remove-application/<%= app.id %>" method="POST"
-                      onsubmit="return confirm('Remove this application?');">
+                <form action="/remove-application/<%= app.id %>" method="POST">
                     <button class="btn-remove">🗑 Remove</button>
                 </form>
             </div>
         </div>
     <% }) %>
+
 </div>
 
-<!-- Bottom Navigation -->
 <div class="mobile-nav">
     <a href="/student-dash" class="nav-item"><div>🔍</div>Explore</a>
-    <a href="/my-applications" class="nav-item active"><div>📝</div>Track Applications</a>
+    <a href="/my-applications" class="nav-item active"><div>📝</div>Track</a>
     <a href="/profile" class="nav-item"><div>👤</div>Profile</a>
 </div>
+
+<script>
+const searchInput = document.getElementById("searchInput");
+const cards = document.querySelectorAll(".app-card");
+const filterBtns = document.querySelectorAll(".filter-btn");
+let active = "all";
+
+function filter(){
+    const term = searchInput.value.toLowerCase();
+
+    cards.forEach(card => {
+        const title = card.dataset.title;
+        const status = card.dataset.status;
+
+        const matchText = title.includes(term);
+        const matchStatus = active === "all" || status === active;
+
+        card.style.display = (matchText && matchStatus) ? "block" : "none";
+    });
+}
+
+searchInput.addEventListener("input", filter);
+
+filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        active = btn.dataset.status;
+        filter();
+    });
+});
+</script>
 
 </body>
 </html>
