@@ -131,14 +131,36 @@ input:focus {
 }
 
 .job-actions {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
 
-.job-actions a,
-.job-actions button {
-  flex: 1;
+.btn-students {
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+  color: white;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 6px 14px rgba(79,70,229,0.25);
+  transition: transform .15s ease, box-shadow .15s ease;
 }
+
+.btn-students:active {
+  transform: scale(0.96);
+}
+
+.btn-delete {
+  background: transparent;
+  border: 1.5px solid #ef4444;
+  color: #ef4444;
+  border-radius: 12px;
+  padding: 12px;
+  font-weight: 700;
+}
+
 
 /* Search */
 .search {
@@ -212,11 +234,16 @@ input:focus {
       </div>
 
       <div class="job-actions">
-        <a href="/applicants/<%= job.id %>" class="btn btn-primary">Students</a>
-        <form action="/delete-internship/<%= job.id %>" method="POST">
-          <button class="btn btn-danger">Delete</button>
-        </form>
-      </div>
+  <a href="/applicants/<%= job.id %>" class="btn-students">
+    👥 Students
+  </a>
+
+  <form action="/delete-internship/<%= job.id %>" method="POST"
+        onsubmit="return confirm('Delete this internship?');">
+    <button class="btn-delete">🗑 Delete</button>
+  </form>
+</div>
+
     </div>
   <% }) %>
 
