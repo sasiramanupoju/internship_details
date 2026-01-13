@@ -125,9 +125,66 @@ body{
 
 <body>
 
+    <script>
+const searchInput = document.getElementById("searchInput");
+const cards = document.querySelectorAll(".app-card");
+const filterBtns = document.querySelectorAll(".filter-btn");
+
+let activeStatus = "all";
+
+function filterCards(){
+    const term = searchInput.value.toLowerCase();
+
+    cards.forEach(card => {
+        const title = card.dataset.title;
+        const status = card.dataset.status;
+
+        const matchesSearch = title.includes(term);
+        const matchesStatus = activeStatus === "all" || status === activeStatus;
+
+        if(matchesSearch && matchesStatus){
+            card.style.display = "block";
+        } else {
+            card.style.display = "none";
+        }
+    });
+}
+
+searchInput.addEventListener("input", filterCards);
+
+filterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        filterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        activeStatus = btn.dataset.status;
+        filterCards();
+    });
+});
+</script>
+
+
 <div class="container py-4">
     <h3 class="page-title mb-1">My <span class="text-primary">Applications</span></h3>
     <p class="text-muted small mb-4">Track your progress in real time</p>
+
+    <!-- Search + Filters -->
+<div class="mb-3">
+
+    <input id="searchInput" 
+           type="text"
+           class="form-control mb-2"
+           placeholder="Search by company or role…">
+
+    <div class="d-flex gap-2 flex-wrap">
+        <button class="btn btn-sm btn-outline-primary filter-btn active" data-status="all">All</button>
+        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Applied">Applied</button>
+        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Received">In Progress</button>
+        <button class="btn btn-sm btn-outline-primary filter-btn" data-status="Hired">Hired</button>
+    </div>
+
+</div>
+
 
     <% if(apps.length === 0){ %>
         <div class="text-center mt-5">
@@ -138,7 +195,10 @@ body{
     <% } %>
 
     <% apps.forEach(app => { %>
-        <div class="app-card">
+        <div class="app-card"
+     data-title="<%= app.title.toLowerCase() %>"
+     data-status="<%= app.status.split(' ')[0] %>">
+
             <div class="d-flex justify-content-between align-items-start">
                 <div>
                     <h6 class="fw-bold mb-1"><%= app.title %></h6>
