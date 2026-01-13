@@ -3,7 +3,6 @@ const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
-const helmet = require('helmet'); // Recommended for security
 
 const app = express();
 // const pool = new Pool({
