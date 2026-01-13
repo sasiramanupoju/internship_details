@@ -3,6 +3,7 @@ const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const path = require('path');
+const helmet = require('helmet'); // Recommended for security
 
 const app = express();
 // const pool = new Pool({
@@ -35,19 +36,32 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use((req, res, next) => {
-    res.setHeader(
-        "Content-Security-Policy",
-        "default-src 'self'; " +
-        // Added 'unsafe-inline' to the line below
-        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " + 
-        "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
-        "font-src 'self' https://fonts.gstatic.com; " +
-        "img-src 'self' data: https://ui-avatars.com; " +
-        "connect-src 'self' ws://localhost:* http://localhost:*;"
-    );
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader(
+//         "Content-Security-Policy",
+//         "default-src 'self'; " +
+//         // Added 'unsafe-inline' to the line below
+//         "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " + 
+//         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
+//         "font-src 'self' https://fonts.gstatic.com; " +
+//         "img-src 'self' data: https://ui-avatars.com; " +
+//         "connect-src 'self' ws://localhost:* http://localhost:*;"
+//     );
+//     next();
+// });
+
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            "default-src": ["'self'"],
+            "script-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+            "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://fonts.googleapis.com", "https://cdnjs.cloudflare.com"],
+            "font-src": ["'self'", "https://fonts.gstatic.com"],
+            "img-src": ["'self'", "data:", "https://ui-avatars.com"],
+            "connect-src": ["'self'", "https://cdn.jsdelivr.net"]
+        },
+    })
+); 
 
 // Middleware to check auth
 const isAuth = (req, res, next) => {
