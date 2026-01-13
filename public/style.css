@@ -1,36 +1,14 @@
-:root {
-    --primary: #6366f1;
-    --secondary: #a855f7;
-}
-
 body {
-    background: #f8fafc;
+    background: #f4f6fb;
     font-family: Inter, sans-serif;
     padding-bottom: 80px;
 }
 
-.glass-card {
-    background: white;
+.card {
     border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
 }
 
-.btn-gradient {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    color: white;
-    border: none;
-}
-
-.btn-gradient:hover {
-    opacity: 0.9;
-}
-
-.internship-card {
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-.mobile-nav {
+.bottom-nav {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -38,17 +16,28 @@ body {
     background: white;
     display: flex;
     justify-content: space-around;
-    padding: 12px 0;
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.1);
+    padding: 10px 0;
+    border-top: 1px solid #e5e7eb;
 }
 
 .nav-item {
     text-align: center;
-    font-size: 12px;
     color: #94a3b8;
     text-decoration: none;
+    font-size: 12px;
+}
+
+.nav-item div {
+    font-size: 22px;
+    line-height: 22px;
+}
+
+.nav-item span {
+    display: block;
+    margin-top: 2px;
 }
 
 .nav-item.active {
-    color: var(--primary);
+    color: #6366f1;
+    font-weight: 600;
 }
