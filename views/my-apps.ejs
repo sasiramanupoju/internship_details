@@ -1,87 +1,185 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Applications</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/style.css">
-    <style>
-        .timeline-container { position: relative; padding-left: 20px; }
-        .timeline-container::before {
-            content: ''; position: absolute; left: 7px; top: 0; bottom: 0;
-            width: 2px; background: #e2e8f0;
-        }
-        .step { position: relative; margin-bottom: 20px; padding-left: 20px; }
-        .step::before {
-            content: ''; position: absolute; left: -18px; top: 5px;
-            width: 12px; height: 12px; border-radius: 50%; background: #6366f1;
-            border: 2px solid #fff; box-shadow: 0 0 0 2px #6366f1;
-        }
-        .step.inactive::before { background: #cbd5e1; box-shadow: 0 0 0 2px #cbd5e1; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Applications</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+    font-family:'Inter',sans-serif;
+    background:#f8fafc;
+    padding-bottom:90px;
+}
+
+/* App header */
+.page-title{
+    font-weight:700;
+}
+
+/* Application Card */
+.app-card{
+    background:white;
+    border-radius:18px;
+    padding:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.05);
+    margin-bottom:16px;
+}
+
+/* Status pill */
+.status-pill{
+    padding:6px 14px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.status-Applied{ background:#e0e7ff; color:#4338ca; }
+.status-Received{ background:#fff7ed; color:#c2410c; }
+.status-Hired{ background:#dcfce7; color:#15803d; }
+
+/* Action buttons */
+.actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+    margin-top:14px;
+}
+
+.btn-view{
+    border:2px solid #6366f1;
+    background:white;
+    color:#6366f1;
+    border-radius:14px;
+    padding:12px;
+    font-weight:700;
+    text-align:center;
+    text-decoration:none;
+}
+
+.btn-remove{
+    background:#fee2e2;
+    color:#b91c1c;
+    border:none;
+    border-radius:14px;
+    padding:12px;
+    font-weight:700;
+}
+
+/* Update status */
+.status-update{
+    margin-top:12px;
+    display:flex;
+    gap:10px;
+}
+
+.status-update select{
+    flex:1;
+    border-radius:12px;
+    padding:10px;
+    border:1px solid #e5e7eb;
+}
+
+.status-update button{
+    background:#6366f1;
+    color:white;
+    border:none;
+    border-radius:12px;
+    padding:10px 16px;
+    font-weight:700;
+}
+
+/* Mobile bottom nav */
+.mobile-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px 0;
+    box-shadow:0 -5px 20px rgba(0,0,0,.06);
+    border-radius:20px 20px 0 0;
+}
+
+.nav-item{
+    text-decoration:none;
+    color:#6b7280;
+    text-align:center;
+    font-size:12px;
+    font-weight:600;
+}
+
+.nav-item div{
+    font-size:20px;
+}
+
+.nav-item.active{
+    color:#6366f1;
+}
+</style>
 </head>
+
 <body>
-    <div class="container py-4">
-        <header class="mb-4">
-            <h2 class="fw-bold mb-1">Application <span class="text-primary">Status</span></h2>
-            <p class="text-muted">Track your progress for applied roles</p>
-        </header>
 
-        <% if (apps.length === 0) { %>
-            <div class="glass-card p-5 text-center mt-5">
-                <div style="font-size: 3rem;">📂</div>
-                <h5 class="mt-3">No applications yet</h5>
-                <p class="text-muted">Explore internships and mark them as applied!</p>
-                <a href="/student-dash" class="btn btn-gradient px-4">Browse Jobs</a>
-            </div>
-        <% } %>
+<div class="container py-4">
+    <h3 class="page-title mb-1">My <span class="text-primary">Applications</span></h3>
+    <p class="text-muted small mb-4">Track your progress in real time</p>
 
-<div class="row">
+    <% if(apps.length === 0){ %>
+        <div class="text-center mt-5">
+            <h2>📂</h2>
+            <p class="text-muted">You haven’t applied to any internships yet.</p>
+            <a href="/student-dash" class="btn btn-primary rounded-pill px-4">Explore Internships</a>
+        </div>
+    <% } %>
+
     <% apps.forEach(app => { %>
-        <div class="col-12 mb-4">
-            <div class="card internship-card shadow-sm border-0">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-3">
-                        <h5 class="fw-bold mb-0"><%= app.title %></h5>
-
-                        
-                        <span class="badge rounded-pill bg-primary px-3 py-2"><%= app.status %></span>
-                        <form action="/remove-application/<%= app.id %>" method="POST" onsubmit="return confirm('Remove this application from your list?');">
-                            <button type="submit" class="btn-close" aria-label="Remove"></button>
-                        </form>
-                    </div>
-
-                    <div class="bg-light p-3 rounded-3 mt-3">
-                        <form action="/update-app-status/<%= app.id %>" method="POST">
-                            <label class="small fw-bold text-muted mb-2">Update Your Progress:</label>
-                            <div class="input-group">
-                                <select name="status" class="form-select border-0 bg-white">
-                                    <option value="Applied" <%= app.status === 'Applied' ? 'selected' : '' %>>Applied</option>
-                                    <option value="Received Call/Message" <%= app.status === 'Received Call/Message' ? 'selected' : '' %>>Received Call/Message</option>
-                                    <option value="Received Test Link" <%= app.status === 'Received Test Link' ? 'selected' : '' %>>Received Test Link</option>
-                                    <option value="Received Interview Link" <%= app.status === 'Received Interview Link' ? 'selected' : '' %>>Received Interview Link</option>
-                                    <option value="Hired" <%= app.status === 'Hired' ? 'selected' : '' %>>Hired 🎉</option>
-                                </select>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    <div class="mt-3">
-                        <a href="<%= app.link %>" target="_blank" class="btn btn-sm btn-link p-0">View Original Posting</a>
-                    </div>
+        <div class="app-card">
+            <div class="d-flex justify-content-between align-items-start">
+                <div>
+                    <h6 class="fw-bold mb-1"><%= app.title %></h6>
+                    <small class="text-muted">Application ID #<%= app.id %></small>
                 </div>
+                <span class="status-pill status-<%= app.status.split(' ')[0] %>">
+                    <%= app.status %>
+                </span>
+            </div>
+
+            <!-- Update status -->
+            <form action="/update-app-status/<%= app.id %>" method="POST" class="status-update">
+                <select name="status">
+                    <option value="Applied" <%= app.status === 'Applied' ? 'selected' : '' %>>Applied</option>
+                    <option value="Received Call/Message" <%= app.status === 'Received Call/Message' ? 'selected' : '' %>>Received Call</option>
+                    <option value="Received Test Link" <%= app.status === 'Received Test Link' ? 'selected' : '' %>>Test Link</option>
+                    <option value="Received Interview Link" <%= app.status === 'Received Interview Link' ? 'selected' : '' %>>Interview</option>
+                    <option value="Hired" <%= app.status === 'Hired' ? 'selected' : '' %>>Hired 🎉</option>
+                </select>
+                <button>Update</button>
+            </form>
+
+            <!-- Actions -->
+            <div class="actions">
+                <a href="<%= app.link %>" target="_blank" class="btn-view">🌐 View Job</a>
+
+                <form action="/remove-application/<%= app.id %>" method="POST"
+                      onsubmit="return confirm('Remove this application?');">
+                    <button class="btn-remove">🗑 Remove</button>
+                </form>
             </div>
         </div>
     <% }) %>
 </div>
-    </div>
 
-    <div class="mobile-nav">
-        <a href="/student-dash" class="nav-item"><div>🔍</div>Explore</a>
-        <a href="/my-applications" class="nav-item active"><div>📝</div>My Apps</a>
-        <a href="/profile" class="nav-item"><div>👤</div>Profile</a>
-    </div>
+<!-- Bottom Navigation -->
+<div class="mobile-nav">
+    <a href="/student-dash" class="nav-item"><div>🔍</div>Explore</a>
+    <a href="/my-applications" class="nav-item active"><div>📝</div>My Apps</a>
+    <a href="/profile" class="nav-item"><div>👤</div>Profile</a>
+</div>
+
 </body>
 </html>
