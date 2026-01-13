@@ -3,94 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Teacher Dashboard</title>
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="/style.css?v=<%= Date.now() %>">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #4f46e5;
+  --bg: #f5f7fb;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --danger: #ef4444;
+  --radius: 14px;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  padding-bottom: 90px;
+}
+
+/* Layout */
+.container {
+  max-width: 900px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.header small {
+  color: var(--muted);
+}
+
+/* Cards */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+
+/* Inputs */
+input, button {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+}
+
+input {
+  background: #f1f5f9;
+}
+
+input:focus {
+  outline: 2px solid var(--primary);
+}
+
+/* Buttons */
+.btn {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+}
+
+.btn-danger {
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: repeat(2,1fr);
+  }
+}
+
+/* Internship card */
+.job {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.job-title {
+  font-weight: 700;
+}
+
+.job-stats {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.job-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.job-actions a,
+.job-actions button {
+  flex: 1;
+}
+
+/* Search */
+.search {
+  margin-bottom: 15px;
+}
+
+/* Bottom Nav */
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #e5e7eb;
+}
+
+.nav a {
+  text-decoration: none;
+  color: var(--muted);
+  text-align: center;
+  font-size: 12px;
+}
+
+.nav a.active {
+  color: var(--primary);
+}
+
+.nav div {
+  font-size: 22px;
+}
+</style>
 </head>
 
 <body>
 
-<div class="container py-3">
+<div class="container">
 
-    <h4 class="fw-bold mb-3">Teacher Dashboard</h4>
+  <div class="header">
+    <div>
+      <h1>Teacher Portal</h1>
+      <small>Manage your internships</small>
+    </div>
+  </div>
 
-    <!-- Post Internship -->
-    <div class="card shadow-sm mb-3 p-3 rounded-4">
-        <h6 class="fw-bold mb-2">Post Internship</h6>
-        <form action="/post-internship" method="POST">
-            <input name="title" class="form-control mb-2" placeholder="Internship Title" required>
-            <input name="link" class="form-control mb-2" placeholder="Application Link" required>
-            <input name="skills" class="form-control mb-2" placeholder="Skills Required">
-            <div class="row g-2">
-                <div class="col-6">
-                    <input name="year" class="form-control" placeholder="Target Year">
-                </div>
-                <div class="col-6">
-                    <input name="positions" type="number" class="form-control" placeholder="Openings">
-                </div>
-            </div>
-            <button class="btn btn-primary w-100 mt-2">Post Internship</button>
+  <!-- Post Internship -->
+  <div class="card">
+    <h3>Post Internship</h3>
+    <form action="/post-internship" method="POST" class="grid">
+      <input name="title" placeholder="Title" required>
+      <input name="skills" placeholder="Skills">
+      <input name="year" placeholder="Year">
+      <input name="pay" placeholder="Stipend">
+      <input name="positions" placeholder="Openings">
+      <input name="link" placeholder="Apply Link" required>
+      <button class="btn btn-primary" style="grid-column:1/-1;">Publish</button>
+    </form>
+  </div>
+
+  <input id="search" class="search" placeholder="Search internships...">
+
+  <!-- Internship List -->
+  <% internships.forEach(job => { %>
+    <div class="job" data-title="<%= job.title.toLowerCase() %>">
+      <div class="job-title"><%= job.title %></div>
+      <div class="job-stats">
+        <span><%= job.applicant_count %> Applied</span>
+        <span><%= job.open_positions %> Open</span>
+      </div>
+
+      <div class="job-actions">
+        <a href="/applicants/<%= job.id %>" class="btn btn-primary">Students</a>
+        <form action="/delete-internship/<%= job.id %>" method="POST">
+          <button class="btn btn-danger">Delete</button>
         </form>
+      </div>
     </div>
-
-    <!-- Search -->
-    <input id="searchInput" class="form-control mb-3" placeholder="Search internship">
-
-    <!-- Internship List -->
-    <% internships.forEach(job => { %>
-    <div class="card shadow-sm mb-3 p-3 rounded-4 listing-card" data-title="<%= job.title.toLowerCase() %>">
-        <h6 class="fw-bold"><%= job.title %></h6>
-        <small class="text-muted">Skills: <%= job.skills_needed %></small>
-
-        <div class="d-flex justify-content-between mt-2">
-            <div>
-                <strong><%= job.applicant_count %></strong>
-                <small class="text-muted d-block">Applied</small>
-            </div>
-            <div>
-                <strong><%= job.open_positions %></strong>
-                <small class="text-muted d-block">Open</small>
-            </div>
-        </div>
-
-        <div class="d-flex gap-2 mt-3">
-            <a href="/applicants/<%= job.id %>" class="btn btn-sm btn-primary w-100">Students</a>
-            <form action="/delete-internship/<%= job.id %>" method="POST" class="w-100">
-                <button class="btn btn-sm btn-outline-danger w-100">Delete</button>
-            </form>
-        </div>
-    </div>
-    <% }) %>
+  <% }) %>
 
 </div>
 
 <!-- Bottom Navigation -->
-<div class="bottom-nav">
-    <a href="/teacher-dash" class="nav-item active">
-        <div>🏠</div>
-        <span>Home</span>
-    </a>
-    <a href="/profile" class="nav-item">
-        <div>👤</div>
-        <span>Profile</span>
-    </a>
-    <a href="/" class="nav-item">
-        <div>🚪</div>
-        <span>Logout</span>
-    </a>
+<div class="nav">
+  <a href="/teacher-dash" class="active"><div>🏠</div>Home</a>
+  <a href="/profile"><div>👤</div>Profile</a>
+  <a href="/"><div>🚪</div>Logout</a>
 </div>
 
 <script>
-const input = document.getElementById("searchInput");
-const cards = document.querySelectorAll(".listing-card");
+const search = document.getElementById("search");
+const jobs = document.querySelectorAll(".job");
 
-input.addEventListener("input", () => {
-    const term = input.value.toLowerCase();
-    cards.forEach(c => {
-        c.style.display = c.dataset.title.includes(term) ? "block" : "none";
-    });
+search.addEventListener("input", () => {
+  const term = search.value.toLowerCase();
+  jobs.forEach(j => {
+    j.style.display = j.dataset.title.includes(term) ? "block" : "none";
+  });
 });
 </script>
 
