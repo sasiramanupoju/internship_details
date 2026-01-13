@@ -1,67 +1,151 @@
 :root {
     --primary: #6366f1;
     --secondary: #a855f7;
-    --bg: #f8fafc;
-    --card: #ffffff;
+    --dark: #0f172a;
+    --gray-bg: #f8fafc;
 }
 
-body {
-    background-color: var(--bg);
+body.mobile-optimized {
+    background-color: var(--gray-bg);
     font-family: 'Inter', sans-serif;
-    padding-bottom: 70px; /* Space for mobile nav */
+    padding-bottom: 100px; /* Space for the bottom nav */
+    overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.8);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+.fw-800 { font-weight: 800; }
+
+/* Large UI Components for Thumbs */
+.btn-post-toggle {
+    background: white;
+    border: 2px dashed #e2e8f0;
+    color: var(--dark);
+    padding: 18px;
+    border-radius: 16px;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.big-input {
+    background: #f1f5f9 !important;
+    border: none !important;
+    padding: 12px 15px !important;
+    border-radius: 12px !important;
+    font-size: 0.95rem;
+}
+
+.search-pill {
+    padding: 14px 14px 14px 45px !important;
+    border-radius: 50px !important;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05) !important;
+}
+
+.search-wrapper { position: relative; }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); }
+
+/* Stat Pills */
+.stat-pill {
+    background: white;
+    padding: 12px;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.stat-pill .label { font-size: 0.65rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; }
+.stat-pill .value { font-size: 1.2rem; font-weight: 800; color: var(--dark); }
+
+/* Listing Cards */
+.listing-card {
     border-radius: 20px;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
-.btn-gradient {
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
+.date-badge {
+    background: #eef2ff;
+    color: var(--primary);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background: #f8fafc;
+    padding: 12px;
+    border-radius: 14px;
+    text-align: center;
+}
+
+.stat-item .stat-value { display: block; font-weight: 800; font-size: 1rem; }
+.stat-item .stat-label { font-size: 0.55rem; color: #94a3b8; font-weight: 700; }
+
+.btn-view-students {
+    background: var(--dark);
     color: white;
-    border: none;
+    padding: 12px;
     border-radius: 12px;
-    font-weight: 600;
-    transition: transform 0.2s;
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: none;
+    transition: all 0.2s;
 }
 
-.btn-gradient:hover {
-    transform: translateY(-2px);
-    color: white;
+.btn-icon-delete {
+    background: #fee2e2;
+    border: none;
+    padding: 8px;
+    border-radius: 10px;
 }
 
-/* Bottom Navigation for Mobile */
-.mobile-nav {
+/* Glass Card */
+.glass-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+}
+
+/* Stable Bottom Nav Fix */
+.fixed-bottom-nav {
     position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--card);
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    background: var(--dark);
     display: flex;
     justify-content: space-around;
-    padding: 12px 0;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-    z-index: 1000;
+    padding: 12px 10px;
+    border-radius: 24px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+    z-index: 9999;
 }
 
-.nav-item {
-    text-align: center;
-    color: #94a3b8;
+.nav-btn {
     text-decoration: none;
-    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #94a3b8;
+    transition: all 0.2s;
 }
 
-.nav-item.active { color: var(--primary); }
+.nav-btn.active { color: white; transform: translateY(-3px); }
+.nav-btn .icon { font-size: 1.2rem; }
+.nav-btn .label { font-size: 0.65rem; font-weight: 700; margin-top: 2px; }
 
-.internship-card {
+/* Global Animations & Helpers */
+.btn-gradient-big {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: white;
+    padding: 15px;
+    border-radius: 14px;
+    font-weight: 800;
     border: none;
-    border-radius: 16px;
-    transition: all 0.3s ease;
+    box-shadow: 0 8px 15px rgba(99, 102, 241, 0.3);
 }
 
-.internship-card:hover {
-    transform: scale(1.02);
-}
+.haptic-btn { transition: transform 0.1s ease; }
