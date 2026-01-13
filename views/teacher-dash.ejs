@@ -1,146 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Teacher Portal | Manage</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-    <link rel="stylesheet" href="/style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Teacher Portal</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="/style.css?v=<%= Date.now() %>">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="mobile-optimized">
-    
-    <div class="container py-4 px-3">
-        <header class="d-flex justify-content-between align-items-center mb-4 animate__animated animate__fadeIn">
-            <div>
-                <h2 class="fw-800 text-dark mb-0">Teacher <span class="text-primary">Portal</span></h2>
-                <p class="text-muted small mb-0">Elevate student careers</p> [cite: 2]
-            </div>
-            <img src="https://ui-avatars.com/api/?name=Teacher&background=6366f1&color=fff" class="rounded-circle shadow-sm" width="45">
-        </header>
 
-        <div class="row g-2 mb-4 animate__animated animate__fadeInUp">
-            <div class="col-6">
-                <div class="stat-pill">
-                    <span class="label">Active Posts</span> [cite: 11]
-                    <span class="value"><%= internships.length %></span>
-                </div>
-            </div>
-            <div class="col-6">
-                <div class="stat-pill">
-                    <span class="label">Total Apps</span>
-                    <span class="value"><%= internships.reduce((acc, curr) => acc + parseInt(curr.applicant_count || 0), 0) %></span>
-                </div>
-            </div>
+<body>
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h4 class="fw-bold mb-0">Teacher <span class="text-primary">Portal</span></h4>
+            <small class="text-muted">Manage internships</small>
         </div>
+        <div class="badge bg-primary">Live</div>
+    </div>
 
-        <div class="mb-4">
-            <button class="btn btn-post-toggle w-100 shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#postForm">
-                <span>✨ Post New Internship</span> [cite: 3]
-                <i class="plus-icon">+</i>
+    <!-- Post Internship -->
+    <div class="glass-card p-3 mb-4">
+        <h6 class="fw-bold mb-3">Post New Internship</h6>
+
+        <form action="/post-internship" method="POST">
+            <input name="title" class="form-control mb-2" placeholder="Internship Title" required>
+            <input name="link" class="form-control mb-2" placeholder="Application Link" required>
+
+            <div class="row g-2">
+                <div class="col-6">
+                    <input name="skills" class="form-control" placeholder="Skills">
+                </div>
+                <div class="col-6">
+                    <input name="year" class="form-control" placeholder="Target Year">
+                </div>
+                <div class="col-6">
+                    <input name="pay" class="form-control" placeholder="Stipend">
+                </div>
+                <div class="col-6">
+                    <input name="positions" type="number" class="form-control" placeholder="Openings">
+                </div>
+            </div>
+
+            <button class="btn btn-gradient w-100 mt-3">
+                Publish Internship
             </button>
-            <div class="collapse mt-3" id="postForm">
-                <div class="glass-card p-4 border-0 shadow-lg" style="background: white; border-radius: 20px;"> [cite: 3]
-                    <form action="/post-internship" method="POST"> [cite: 3]
-                        <div class="row g-3">
-                            <div class="col-12">
-                                <label class="small fw-bold text-muted">Position Title</label>
-                                <input name="title" placeholder="e.g. Frontend Intern" class="form-control big-input" required> [cite: 4]
-                            </div>
-                            <div class="col-12">
-                                <label class="small fw-bold text-muted">Link</label>
-                                <input name="link" placeholder="External URL" class="form-control big-input" required> [cite: 5]
-                            </div>
-                            <div class="col-6">
-                                <label class="small fw-bold text-muted">Skills</label>
-                                <input name="skills" placeholder="Java, React" class="form-control big-input"> [cite: 6]
-                            </div>
-                            <div class="col-6">
-                                <label class="small fw-bold text-muted">Year</label>
-                                <input name="year" placeholder="3rd, 4th" class="form-control big-input"> [cite: 7]
-                            </div>
-                        </div>
-                        <button class="btn btn-gradient-big w-100 mt-4">Publish 🚀</button> [cite: 10]
+        </form>
+    </div>
+
+    <!-- Search -->
+    <input id="searchInput" class="form-control mb-3" placeholder="Search internship">
+
+    <!-- Listings -->
+    <div id="listings">
+        <% internships.forEach(job => { %>
+        <div class="card internship-card mb-3 listing-card"
+            data-title="<%= job.title.toLowerCase() %>"
+            data-skills="<%= job.skills_needed.toLowerCase() %>">
+
+            <div class="card-body">
+                <h6 class="fw-bold"><%= job.title %></h6>
+                <p class="small text-muted">Skills: <%= job.skills_needed %></p>
+
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <strong><%= job.applicant_count %></strong>
+                        <small class="text-muted">Applied</small>
+                    </div>
+                    <div>
+                        <strong><%= job.open_positions %></strong>
+                        <small class="text-muted">Open</small>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-2 mt-3">
+                    <a href="/applicants/<%= job.id %>" class="btn btn-sm btn-primary w-100">
+                        Students
+                    </a>
+
+                    <form action="/delete-internship/<%= job.id %>" method="POST" class="w-100">
+                        <button class="btn btn-sm btn-outline-danger w-100">
+                            Delete
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
-
-        <div class="search-wrapper mb-4">
-            <input type="text" id="searchInput" class="form-control search-pill" placeholder="Search your listings..." style="border-radius: 12px; height: 45px;"> [cite: 11, 12]
-            <span class="search-icon">🔍</span> [cite: 12]
-        </div>
-
-        <div id="listingsContainer" class="row">
-            <% if (internships.length > 0) { %> [cite: 13]
-                <% internships.forEach((job, index) => { %> [cite: 13]
-                    <div class="col-12 mb-3 listing-card-wrapper animate__animated animate__fadeInUp" 
-                         style="animation-delay: <%= index * 0.1 %>s"
-                         data-title="<%= job.title.toLowerCase() %>" 
-                         [cite_start]data-skills="<%= job.skills_needed.toLowerCase() %>"> [cite: 13]
-                        <div class="card listing-card border-0 shadow-sm p-3" style="border-radius: 18px;"> [cite: 13]
-                            <div class="d-flex justify-content-between align-items-start mb-3"> [cite: 14]
-                                <div>
-                                    <h6 class="fw-bold text-dark mb-0"><%= job.title %></h6> [cite: 15]
-                                    <span class="date-badge">📅 <%= job.created_at ? new Date(job.created_at).toLocaleDateString() : 'Today' %></span> [cite: 16, 17]
-                                </div>
-                                <form action="/delete-internship/<%= job.id %>" method="POST" onsubmit="return confirm('Delete?');"> [cite: 27, 28]
-                                    <button type="submit" class="btn-icon-delete">🗑️</button> [cite: 28, 29]
-                                </form>
-                            </div>
-                            
-                            <div class="stats-grid mb-3">
-                                <div class="stat-item">
-                                    <span class="stat-value text-primary"><%= job.applicant_count %></span> [cite: 20]
-                                    <span class="stat-label">APPLIED</span> [cite: 20]
-                                </div>
-                                <div class="stat-item">
-                                    <span class="stat-value"><%= job.open_positions %></span> [cite: 22]
-                                    <span class="stat-label">SLOTS</span> [cite: 23, 24]
-                                </div>
-                            </div>
-
-                            <a href="/applicants/<%= job.id %>" class="btn btn-view-students">View Students</a> [cite: 26]
-                        </div>
-                    </div>
-                <% }) %> [cite: 31]
-            <% } else { %> [cite: 31]
-                <div class="col-12 text-center py-5">
-                    <span style="font-size: 3rem;">🏜️</span>
-                    <h5 class="fw-bold mt-3">No active listings</h5> [cite: 33]
-                </div>
-            <% } %> [cite: 34]
-        </div>
+        <% }) %>
     </div>
 
-    <nav class="fixed-bottom-nav">
-        <a href="/teacher-dash" class="nav-btn active">
-            <span class="icon">🏠</span> [cite: 36]
-            <span class="label">Home</span> [cite: 36]
-        </a>
-        <a href="/profile" class="nav-btn">
-            <span class="icon">👤</span> [cite: 36]
-            <span class="label">Profile</span> [cite: 36]
-        </a>
-        <a href="/" class="nav-btn">
-            <span class="icon">🚪</span> [cite: 37]
-            <span class="label">Logout</span> [cite: 37]
-        </a>
-    </nav>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        const searchInput = document.getElementById('searchInput'); [cite: 38]
-        const cards = document.querySelectorAll('.listing-card-wrapper'); [cite: 38]
+<!-- Mobile Navigation -->
+<div class="mobile-nav">
+    <a href="/teacher-dash" class="nav-item active">🏠<br>Home</a>
+    <a href="/profile" class="nav-item">👤<br>Profile</a>
+    <a href="/" class="nav-item">🚪<br>Logout</a>
+</div>
 
-        searchInput.addEventListener('input', (e) => { [cite: 38]
-            const term = e.target.value.toLowerCase(); [cite: 38]
-            cards.forEach(card => {
-                const text = card.getAttribute('data-title') + card.getAttribute('data-skills'); [cite: 39]
-                card.style.display = text.includes(term) ? 'block' : 'none'; [cite: 40]
-            });
-        });
-    </script>
+<script>
+const searchInput = document.getElementById("searchInput");
+const cards = document.querySelectorAll(".listing-card");
+
+searchInput.addEventListener("input", e => {
+    const term = e.target.value.toLowerCase();
+
+    cards.forEach(card => {
+        const t = card.dataset.title;
+        const s = card.dataset.skills;
+        card.style.display = (t.includes(term) || s.includes(term)) ? "block" : "none";
+    });
+});
+</script>
+
 </body>
 </html>
