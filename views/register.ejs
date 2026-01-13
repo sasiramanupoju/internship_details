@@ -8,11 +8,23 @@
 <body>
     <div class="container bg-white p-4 rounded shadow-sm" style="max-width: 500px;">
         <h2 class="text-center mb-4">Create Account</h2>
-        <form action="/register" method="POST">
+
+        <form action="/register" method="POST" onsubmit="return checkPasswords()">
+
             <input type="text" name="name" class="form-control mb-3" placeholder="Full Name" required>
+
             <input type="email" name="email" class="form-control mb-3" placeholder="Email" required>
-            <input type="password" name="password" class="form-control mb-3" placeholder="Password" required>
-            <select name="role" id="role" class="form-select mb-3" onchange="toggleFields()">
+
+            <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" required>
+
+            <input type="password" id="confirmPassword" class="form-control mb-3" placeholder="Confirm Password" required>
+
+            <div id="passError" class="text-danger small mb-2" style="display:none;">
+                Passwords do not match
+            </div>
+
+            <select name="role" id="role" class="form-select mb-3" onchange="toggleFields()" required>
+                <option value="">Select Role</option>
                 <option value="student">Student</option>
                 <option value="teacher">Teacher</option>
             </select>
@@ -32,20 +44,54 @@
             </select>
 
             <div id="teacher-fields" style="display:none;">
-                <input type="text" name="designation" class="form-control mb-3" placeholder="Designation">
+                <input type="text" id="designation" name="designation" class="form-control mb-3" placeholder="Designation" required>
             </div>
-            <div id="student-fields">
-                <input type="text" name="year" class="form-control mb-3" placeholder="Roll Number">
+
+            <div id="student-fields" style="display:block;">
+                <input type="text" id="year" name="year" class="form-control mb-3" placeholder="Roll Number" required>
             </div>
+
             <button class="btn btn-primary w-100">Register</button>
         </form>
     </div>
-    <script>
-        function toggleFields() {
-            const role = document.getElementById('role').value;
-            document.getElementById('teacher-fields').style.display = role === 'teacher' ? 'block' : 'none';
-            document.getElementById('student-fields').style.display = role === 'student' ? 'block' : 'none';
-        }
-    </script>
+
+<script>
+function toggleFields() {
+    const role = document.getElementById('role').value;
+
+    const teacher = document.getElementById('teacher-fields');
+    const student = document.getElementById('student-fields');
+
+    const designation = document.getElementById('designation');
+    const year = document.getElementById('year');
+
+    if (role === 'teacher') {
+        teacher.style.display = 'block';
+        student.style.display = 'none';
+        designation.required = true;
+        year.required = false;
+    } else if (role === 'student') {
+        teacher.style.display = 'none';
+        student.style.display = 'block';
+        designation.required = false;
+        year.required = true;
+    }
+}
+
+function checkPasswords() {
+    const pass = document.getElementById("password").value;
+    const confirm = document.getElementById("confirmPassword").value;
+    const error = document.getElementById("passError");
+
+    if (pass !== confirm) {
+        error.style.display = "block";
+        return false;
+    }
+
+    error.style.display = "none";
+    return true;
+}
+</script>
+
 </body>
 </html>
