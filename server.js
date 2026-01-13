@@ -57,7 +57,13 @@ const isAuth = (req, res, next) => {
 // --- ROUTES ---
 
 app.get('/', (req, res) => res.render('login'));
+
+app.get('/login', (req, res) => {
+    res.render('login');
+});
+
 app.get('/register', (req, res) => res.render('register'));
+
 
 app.get('/applicants/:id', isAuth, async (req, res) => {
     const internshipId = req.params.id;
